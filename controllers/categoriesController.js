@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 // Display list of all Categories
 exports.category_list = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Author list');
+  res.send('NOT IMPLEMENTED: Category list');
 });
 
 // Display details page for specific Category
@@ -37,6 +37,6 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Category update on POST
-exports.category_update.post = asyncHandler(async (req, res, next) => {
+exports.category_update_post = asyncHandler(async (req, res, next) => {
   res.send(`NOT IMPLEMENTED: Category update POST`);
 });

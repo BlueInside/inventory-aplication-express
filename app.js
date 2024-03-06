@@ -6,8 +6,8 @@ const logger = require('morgan');
 require('dotenv').config();
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-
+const categoriesRouter = require('./routes/categories');
+const itemsRouter = require('./routes/items');
 const app = express();
 
 // Set up mongoose connection
@@ -31,8 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use('/categories', categoriesRouter);
+app.use('/items', itemsRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

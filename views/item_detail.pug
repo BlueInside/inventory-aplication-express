@@ -1,0 +1,22 @@
+extends layout 
+
+block content 
+
+    h1 #{title}: 
+
+    dl 
+        dt #[strong #{item.name}:]
+        dd= item.description
+        dt #[strong Category:]
+        each category in item.category 
+            dd 
+                a(href=category.url)=category.name 
+        else 
+           dd -
+        dt #[strong Price:] 
+        dd $ #{item.price} 
+        dt #[strong Stock:]
+        dd Currently in stock: #{item.numberInStock} 
+
+        
+        

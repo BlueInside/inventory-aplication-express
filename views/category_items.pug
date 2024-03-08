@@ -2,6 +2,8 @@ extends layout
 
 block content 
     h1= title
+    p= category.description
+
     if items.length > 0
         ul  
             each item in items 

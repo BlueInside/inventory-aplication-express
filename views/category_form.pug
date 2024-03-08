@@ -8,8 +8,13 @@ block content
         div.form-flex
             div 
                 label(for="name") Name: 
-                input#name(type="text" placeholder='Dairy, meat etc...' required)  
+                input#name(type="text" name="name", placeholder='Dairy, meat etc...', value=(category===undefined ? '': category.name ) required)
             div 
                 label(for="description") Description: 
-                input#description(type='text', placeholder="Describe the product", required, )
+                input#description(type='text', name="description", value=(category===undefined ? '': category.description ),  placeholder="Describe the product", required, )
             button(type="submit") Submit 
+    
+    if(errors) 
+        ul 
+            each error in errors 
+                li= error.msg 

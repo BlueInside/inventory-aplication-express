@@ -1,4 +1,5 @@
 const Item = require('../models/item');
+const Category = require('../models/category');
 const asyncHandler = require('express-async-handler');
 
 // Display list of all Items
@@ -10,7 +11,15 @@ exports.item_list = asyncHandler(async (req, res, next) => {
 
 // Display details page for specific Item
 exports.item_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Item Detail: ${req.params.id}`);
+  const item = await Item.findById(req.params.id).populate('category').exec();
+
+  if (item == null) {
+    const error = new Error('Item does not exist');
+    error.status = 404;
+    next(error);
+  }
+
+  res.render('item_detail', { title: `Product description`, item: item });
 });
 
 // Display Item create form on GET

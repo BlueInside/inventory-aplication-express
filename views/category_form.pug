@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+    h1= title
+    
+    form(method='POST')
+
+        div.form-flex
+            div 
+                label(for="name") Name: 
+                input#name(type="text" placeholder='Dairy, meat etc...' required)  
+            div 
+                label(for="description") Description: 
+                input#description(type='text', placeholder="Describe the product", required, )
+            button(type="submit") Submit 

@@ -7,10 +7,17 @@ a {
   color: #00b7ff;
 }
 
-.mainContent {
+.main-content {
   flex: 0.9;
 }
 
 .navbar li {
   margin: 20px 0px;
+}
+
+.form-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
 }

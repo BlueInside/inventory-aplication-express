@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+
+    h1 #{title}: #{item.name}
+
+    p #[strong Do you really want to delete this product ?]
+
+    form(method='POST')
+        input#itemId(type="hidden" name="itemId" value=item._id ) 
+        button(type="submit") Delete

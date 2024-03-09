@@ -1,0 +1,20 @@
+extends layout 
+
+block content 
+
+    h1 #{title}: #{category.name} 
+    
+    if items.length 
+        p #[strong Delete the following items before attempting to delete this category]    
+        div 
+            h4 Items:
+            dl 
+                each item in items
+                    dt
+                        a(href=item.url)= item.name 
+    else 
+        p #[strong Do you want to delete this category?]
+        form(method='POST') 
+            input#categoryId(type="hidden" name='categoryId' value=category._id)
+            button(type="submit") Delete
+                

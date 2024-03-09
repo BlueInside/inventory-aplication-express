@@ -18,5 +18,10 @@ block content
         dt #[strong Stock:]
         dd Currently in stock: #{item.numberInStock} 
 
+    hr
+    p 
+        a(href=item.url + '/delete') Delete product 
+    p 
+        a(href=item.url + '/update') Update product 
         
         

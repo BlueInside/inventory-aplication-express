@@ -21,3 +21,12 @@ a {
   align-items: flex-start;
   gap: 15px;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 60px;
+  max-width: 1200px;
+  margin: auto;
+}

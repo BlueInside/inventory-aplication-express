@@ -1,5 +1,6 @@
 const Category = require('../models/category');
 const Item = require('../models/item');
+const mongoose = require('mongoose');
 const { body, validationResult } = require('express-validator');
 
 const asyncHandler = require('express-async-handler');
@@ -21,19 +22,13 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
     Item.find({ category: req.params.id }),
   ]);
 
-  if (category == null) {
-    const error = new Error('Category not found');
-    error.status = 404;
-    next(error);
-  }
-
   res.render('category_items', {
     title: `Category ${category.name}`,
     category: category,
     items: itemsInCategory,
   });
 });
-[];
+
 // Display Category create form on GET
 exports.category_create_get = asyncHandler(async (req, res, next) => {
   res.render('category_form', { title: 'Create category' });
@@ -78,20 +73,85 @@ exports.category_create_post = [
 
 // Displays Category delete form on GET
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Category delete GET:`);
+  const [category, allItemsInCategory] = await Promise.all([
+    Category.findById(req.params.id),
+    Item.find({ category: req.params.id }),
+  ]);
+
+  if (category === null) {
+    res.redirect('/categories');
+  }
+  res.render(`category_delete`, {
+    title: 'Delete category',
+    category: category,
+    items: allItemsInCategory,
+  });
 });
 
 // Handle Category delete on POST
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
+  const [category, allItemsInCategory] = await Promise.all([
+    Category.findById(req.params.id),
+    Item.find({ category: req.params.id }),
+  ]);
+  if (allItemsInCategory.length > 0) {
+    res.render('category_delete', {
+      title: 'Delete Category',
+      category: category,
+      items: allItemsInCategory,
+    });
+  } else {
+    await Category.findByIdAndDelete(req.body.categoryId);
+    res.redirect('/categories');
+  }
   res.send(`NOT IMPLEMENTED: Category delete POST`);
 });
 
 // Display Category update form on GET
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Category update GET`);
+  const category = await Category.findById(req.params.id);
+
+  res.render('category_form', { title: 'Edit product', category: category });
 });
 
 // Handle Category update on POST
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Category update POST`);
-});
+exports.category_update_post = [
+  body('name', 'Category must not be empty')
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage('Product name must be longer than 3 characters'),
+  body('description', ' Description must not be empty')
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage(
+      'Product description must be specified and longer than 3 characters'
+    ),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render('category_form', {
+        title: 'Edit category',
+        category: category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        req.params.id,
+        category,
+        {}
+      );
+      res.redirect(updatedCategory.url);
+    }
+  }),
+];
